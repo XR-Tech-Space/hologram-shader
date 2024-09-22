@@ -2,7 +2,7 @@ import * as THREE from "three"
 import { OrbitControls } from "three/addons/controls/OrbitControls.js"
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js"
 import holographicVertexShader from './shaders/holographic/vertex.glsl'
-
+import holographicFragmentShader from "./shaders/holographic/fragment.glsl"
 
 
 
@@ -58,8 +58,13 @@ window.addEventListener("resize",()=>{
 // Loaders
 const gltfLoader = new GLTFLoader()
 
-// Mesh
-const material = new THREE.ShaderMaterial()
+//#region Mesh
+const material = new THREE.ShaderMaterial({
+    vertexShader:holographicVertexShader,
+    fragmentShader:holographicFragmentShader
+})
+
+
 
 let suzanne = null
 gltfLoader.load(
@@ -91,20 +96,17 @@ const torusKnot = new THREE.Mesh(
 
 scene.add(torusKnot)
 torusKnot.position.x=3
-
+//#endregion
 
 
 // Animate
 
 const clock = new THREE.Clock()
 
-
-
 function animate(){
 
     const elapsedTime = clock.getElapsedTime()
     
-
     if(suzanne){ // make sure the 3D object is loaded
         suzanne.rotation.x=-elapsedTime * 0.1
         suzanne.rotation.y= elapsedTime * 0.2
