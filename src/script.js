@@ -3,6 +3,7 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js"
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js"
 import holographicVertexShader from './shaders/holographic/vertex.glsl'
 import holographicFragmentShader from "./shaders/holographic/fragment.glsl"
+import { uniform } from "three/webgpu"
 
 
 
@@ -61,7 +62,10 @@ const gltfLoader = new GLTFLoader()
 //#region Mesh
 const material = new THREE.ShaderMaterial({
     vertexShader:holographicVertexShader,
-    fragmentShader:holographicFragmentShader
+    fragmentShader:holographicFragmentShader,
+    uniforms:{
+        uTime: new THREE.Uniform(0)
+    }
 })
 
 
@@ -106,6 +110,10 @@ const clock = new THREE.Clock()
 function animate(){
 
     const elapsedTime = clock.getElapsedTime()
+
+    // Update material
+    material.uniforms.uTime.value = elapsedTime
+
     
     if(suzanne){ // make sure the 3D object is loaded
         suzanne.rotation.x=-elapsedTime * 0.1
