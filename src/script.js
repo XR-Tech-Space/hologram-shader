@@ -1,6 +1,8 @@
 import * as THREE from "three"
 import { OrbitControls } from "three/addons/controls/OrbitControls.js"
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js"
+import holographicVertexShader from './shaders/holographic/vertex.glsl'
+
 
 
 
@@ -57,9 +59,8 @@ window.addEventListener("resize",()=>{
 const gltfLoader = new GLTFLoader()
 
 // Mesh
-const material = new THREE.MeshBasicMaterial({
-    wireframe:true
-})
+const material = new THREE.ShaderMaterial()
+
 let suzanne = null
 gltfLoader.load(
     './resources/suzanne.glb',
