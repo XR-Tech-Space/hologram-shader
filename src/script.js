@@ -1,14 +1,25 @@
+import GUI from "lil-gui"
 import * as THREE from "three"
 import { OrbitControls } from "three/addons/controls/OrbitControls.js"
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js"
 import holographicVertexShader from './shaders/holographic/vertex.glsl'
 import holographicFragmentShader from "./shaders/holographic/fragment.glsl"
-import { uniform } from "three/webgpu"
 
 
 
 
 
+
+// Debug
+const gui=new GUI()
+// gui.hide()
+let onOff=true
+window.addEventListener("keydown",(e)=>{
+    if(e.key ==="h" || e.key==="H"){
+        onOff=!onOff
+        gui.show(onOff)
+    }
+})
 
 // Scene
 const scene = new THREE.Scene()
@@ -59,16 +70,35 @@ window.addEventListener("resize",()=>{
 // Loaders
 const gltfLoader = new GLTFLoader()
 
-//#region Mesh
+//#region  Material
+const materialParameters={}
+materialParameters.color="#70c1ff"
+
+gui
+    .addColor(materialParameters,"color")
+    .onChange(()=>{
+        material.uniforms.uColor.value.set(materialParameters.color)
+    })
+
+
+
+
 const material = new THREE.ShaderMaterial({
     vertexShader:holographicVertexShader,
     fragmentShader:holographicFragmentShader,
     uniforms:{
-        uTime: new THREE.Uniform(0)
-    }
+        uTime: new THREE.Uniform(0),
+        uColor: new THREE.Uniform(new THREE.Color(materialParameters))
+    },
+    transparent:true,
+    side:THREE.DoubleSide,
+    depthWrite:false,
+    blending:THREE.AdditiveBlending
 })
 
+//#endregion
 
+//#region Mesh
 
 let suzanne = null
 gltfLoader.load(
