@@ -7,7 +7,7 @@ void main(){
 
     // Stripes
     float stripes = vPosition.y;
-    stripes = mod((vPosition.y-uTime*0.03)*10.0,1.0);
+    stripes = mod((vPosition.y-uTime*0.03)*20.0,1.0);
     // -uTime 条纹产生上移效果，反之下移
     stripes = pow(stripes,2.0); //延缓数值陡升，让条纹渐变更明显 （0-1）
 
