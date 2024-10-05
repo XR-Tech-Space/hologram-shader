@@ -102,7 +102,7 @@ const material = new THREE.ShaderMaterial({
 
 let suzanne = null
 gltfLoader.load(
-    '/resources/suzanne.glb',
+    '../resources/suzanne.glb',
     (gltf) =>
     {
         suzanne = gltf.scene
